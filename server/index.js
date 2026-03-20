@@ -33,6 +33,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
+// Vercel serverless 导出
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
 })
+
+export default app

@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: './',  // GitHub Pages 需要相对路径
+  base: './',  // 相对路径
   server: {
     port: 3000,
     proxy: {
