@@ -1,0 +1,47 @@
+<!--pages/auction/auction.wxml-->
+<view class="container">
+  <!-- 顶部Banner -->
+  <view class="banner">
+    <text class="banner-text">小出价，大收益，每一次竞拍都可能翻倍！</text>
+  </view>
+
+  <!-- 竞拍列表 -->
+  <view class="auction-list">
+    <view 
+      class="auction-card" 
+      wx:for="{{auctionList}}" 
+      wx:key="id"
+      bindtap="goToDetail"
+      data-id="{{item.id}}"
+    >
+      <!-- 商品图/占位图 -->
+      <view class="product-image-wrap">
+        <image wx:if="{{item.image}}" class="product-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="product-image-placeholder" wx:else>
+          <text class="placeholder-emoji">{{item.icon}}</text>
+        </view>
+      </view>
+      <view class="product-info">
+        <text class="product-title">{{item.title}}</text>
+        <view class="price-row">
+          <view class="price-info">
+            <text class="current-price">¥{{item.currentPrice}}</text>
+            <text class="start-price">起拍价 ¥{{item.startPrice}}</text>
+          </view>
+          <view class="countdown {{item.isUrgent ? 'urgent' : ''}}">
+            <text class="countdown-text">{{item.countdownText}}</text>
+          </view>
+        </view>
+        <view class="profit-row">
+          <text class="profit-badge">收益 {{item.profitPercent}}%</text>
+          <text class="bid-count">{{item.bidCount}}人出价</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{auctionList.length === 0}}">
+    <text class="empty-text">暂无竞拍商品</text>
+  </view>
+</view>

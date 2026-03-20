@@ -1,0 +1,130 @@
+<!--pages/profile/profile.wxml - 浅色主题-->
+<view class="container">
+  <!-- 未登录状态 -->
+  <view class="login-tip" wx:if="{{!loggedIn}}">
+    <view class="login-content">
+      <view class="login-icon">👤</view>
+      <text class="login-text">登录后查看您的竞拍订单和收益</text>
+      <button class="btn-login" bindtap="onLogin">立即登录</button>
+    </view>
+  </view>
+
+  <!-- 已登录状态 -->
+  <view class="profile-content" wx:else>
+    <!-- 用户信息头部 -->
+    <view class="profile-header">
+      <view class="avatar">👤</view>
+      <text class="user-name">{{userInfo.nickname}}</text>
+    </view>
+
+    <!-- 收益卡片 -->
+    <view class="profit-card">
+      <view class="profit-title">我的收益</view>
+      <view class="profit-amounts">
+        <view class="profit-amount-item">
+          <text class="profit-label">总收益</text>
+          <text class="profit-value total">¥{{profit.totalProfit}}</text>
+        </view>
+        <view class="profit-amount-item">
+          <text class="profit-label">可提现</text>
+          <text class="profit-value available">¥{{profit.availableAmount}}</text>
+        </view>
+        <view class="profit-amount-item">
+          <text class="profit-label">冻结中</text>
+          <text class="profit-value frozen">¥{{profit.frozenAmount}}</text>
+        </view>
+      </view>
+      <button class="btn-withdraw" bindtap="onWithdraw">提现</button>
+    </view>
+
+    <!-- Tab切换 -->
+    <view class="tab-header">
+      <view 
+        class="tab-item {{currentTab === 'orders' ? 'active' : ''}}"
+        bindtap="onTabChange"
+        data-tab="orders"
+      >
+        竞拍订单
+      </view>
+      <view 
+        class="tab-item {{currentTab === 'profits' ? 'active' : ''}}"
+        bindtap="onTabChange"
+        data-tab="profits"
+      >
+        收益明细
+      </view>
+    </view>
+
+    <!-- 订单列表 -->
+    <view class="tab-content" wx:if="{{currentTab === 'orders'}}">
+      <view class="order-list" wx:if="{{orders.length > 0}}">
+        <view 
+          class="order-card"
+          wx:for="{{orders}}"
+          wx:key="id"
+        >
+          <view class="order-header" bindtap="onOrderTap" data-id="{{item.goodsId}}">
+            <image class="product-thumb" src="{{item.image}}" mode="aspectFill"/>
+            <view class="product-detail">
+              <text class="order-title">{{item.title}}</text>
+              <text class="product-price">¥{{item.currentPrice}}</text>
+              <text class="deposit-info">保证金: ¥{{item.deposit}}</text>
+            </view>
+          </view>
+          <view class="order-footer">
+            <view class="order-status {{orderStatusMap[item.status].class}}">
+              {{item.statusText}}
+            </view>
+            <view class="order-actions">
+              <button 
+                class="btn-pay"
+                wx:if="{{item.status === 1}}"
+                bindtap="onPayOrder"
+                data-id="{{item.id}}"
+              >
+                去支付
+              </button>
+              <button 
+                class="btn-detail"
+                bindtap="onOrderTap"
+                data-id="{{item.goodsId}}"
+              >
+                查看详情
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="empty-tip" wx:elif="{{!loadingOrders}}">
+        <text>暂无订单</text>
+      </view>
+    </view>
+
+    <!-- 收益明细 -->
+    <view class="tab-content" wx:if="{{currentTab === 'profits'}}">
+      <view class="profit-list" wx:if="{{profitRecords.length > 0}}">
+        <view 
+          class="profit-item"
+          wx:for="{{profitRecords}}"
+          wx:key="id"
+        >
+          <view class="profit-item-left">
+            <text class="profit-source">{{item.goodsTitle}}</text>
+            <text class="profit-date">出价: ¥{{item.bidAmount}} · {{item.createTime}}</text>
+          </view>
+          <view class="profit-item-right">
+            <text class="profit-value">+¥{{item.profit}}</text>
+            <text class="profit-status {{item.status === 0 ? 'frozen' : 'available'}}">
+              {{item.statusText}}
+            </text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="empty-tip" wx:elif="{{!loadingProfits}}">
+        <text>暂无收益记录</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,50 @@
+<!--pages/index/index.wxml - 浅色主题-->
+<view class="container">
+  <!-- 顶部 Slogan -->
+  <view class="header-slogan">
+    小出价，大收益，每一次竞拍都可能翻倍！
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="onSearchTap">
+    🔍  搜索商品
+  </view>
+
+  <!-- 金刚区分类入口 -->
+  <view class="category-container">
+    <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
+      <view class="category-icon">{{item.icon}}</view>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="product-list">
+    <view 
+      class="product-card" 
+      wx:for="{{goodsList}}" 
+      wx:key="id"
+      bindtap="onGoodsTap"
+      data-id="{{item.id}}"
+    >
+      <!-- 商品图片/占位图 -->
+      <view class="product-image-wrap">
+        <image wx:if="{{item.image}}" class="product-image" src="{{item.image}}" mode="aspectFill" binderror="onImageError" data-index="{{index}}"></image>
+        <view class="product-image-placeholder" wx:else>
+          <text class="placeholder-emoji">{{item.icon}}</text>
+        </view>
+      </view>
+      <view class="product-info">
+        <text class="product-title">{{item.title}}</text>
+        <view class="product-prices">
+          <text class="current-price">¥{{item.currentPrice}}</text>
+          <text class="label">收益 {{item.profitRatio}}%</text>
+        </view>
+        <view class="product-bottom">
+          <text class="price">起拍价 ¥{{item.startPrice}}</text>
+          <text class="countdown {{item.isUrgent ? 'urgent' : ''}}">{{item.countdownText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

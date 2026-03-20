@@ -1,0 +1,136 @@
+<!--pages/detail/detail.wxml - 浅色主题-->
+<view class="container">
+  <!-- 商品图片轮播 -->
+  <view class="image-swiper-wrap">
+    <swiper 
+      class="image-swiper" 
+      indicator-dots 
+      autoplay 
+      circular
+      bindchange="onImageChange"
+    >
+      <swiper-item 
+        wx:for="{{goods.images}}" 
+        wx:key="*this"
+      >
+        <image 
+          class="slide-image" 
+          src="{{item}}" 
+          mode="aspectFill"
+        />
+      </swiper-item>
+    </swiper>
+    <view class="image-indicator">
+      {{currentImageIndex + 1}} / {{goods.images.length}}
+    </view>
+  </view>
+
+  <!-- 商品信息 -->
+  <view class="product-info-section">
+    <text class="product-title">{{goods.title}}</text>
+    <text class="product-desc">{{goods.description}}</text>
+  </view>
+
+  <!-- 竞拍信息 -->
+  <view class="auction-info">
+    <view class="info-row">
+      <text class="info-label">起拍价</text>
+      <text class="info-value">¥{{goods.startPrice}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">当前价</text>
+      <text class="current-price">¥{{goods.currentPrice}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">收益比例</text>
+      <text class="profit-percent">{{goods.profitRatio}}%</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">{{goods.status === 0 ? '距结束' : '状态'}}</text>
+      <text class="countdown {{goods.status === 0 && remaining < 60000 ? 'urgent' : ''}}">
+        {{goods.status === 0 ? countdownText : '已结束'}}
+      </text>
+    </view>
+  </view>
+
+  <!-- 保证金状态 -->
+  <view class="deposit-status" wx:if="{{goods.status === 0}}">
+    <text class="deposit-text">保证金: ¥{{goods.deposit}}</text>
+    <text class="deposit-badge {{hasPaidDeposit ? 'paid' : ''}}">
+      {{hasPaidDeposit ? '已缴纳' : '未缴纳'}}
+    </text>
+  </view>
+
+  <!-- 出价记录 -->
+  <view class="bid-list">
+    <view class="section-title">出价记录 ({{bidRecords.length}})</view>
+    
+    <view class="record-list" wx:if="{{bidRecords.length > 0}}">
+      <view 
+        class="bid-item {{index === 0 ? 'highlight' : ''}}" 
+        wx:for="{{bidRecords}}" 
+        wx:key="id"
+      >
+        <view class="bid-user">
+          <view class="user-avatar">👤</view>
+          <text class="user-name">{{item.nickname}}</text>
+          <text class="rank-badge" wx:if="{{index === 0}}">最高</text>
+        </view>
+        <view class="bid-amount">
+          <text class="bid-price">¥{{item.bidAmount}}</text>
+          <text class="bid-profit">收益: +¥{{item.profit}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-records" wx:elif="{{!loadingBidRecords}}">
+      <text>暂无出价记录</text>
+    </view>
+  </view>
+
+  <!-- 底部操作区 -->
+  <view class="bottom-action">
+    <view class="bid-input-section">
+      <input 
+        class="bid-input" 
+        type="digit"
+        placeholder="输入出价金额"
+        value="{{bidAmount}}"
+        bindinput="onBidInput"
+        bindblur="onBidBlur"
+        disabled="{{goods.status !== 0}}"
+      />
+      <text class="bid-error" wx:if="{{bidError}}">{{bidError}}</text>
+    </view>
+    
+    <view class="action-btns">
+      <!-- 未缴纳保证金 -->
+      <button 
+        class="deposit-btn" 
+        wx:if="{{!hasPaidDeposit && goods.status === 0}}"
+        bindtap="onPayDeposit"
+      >
+        缴纳保证金
+      </button>
+      
+      <!-- 已缴纳保证金，出价 -->
+      <button 
+        class="bid-btn" 
+        wx:if="{{goods.status === 0}}"
+        bindtap="onSubmitBid"
+        disabled="{{bidding || !hasPaidDeposit}}"
+      >
+        {{bidding ? '出价中...' : '立即出价'}}
+      </button>
+      
+      <!-- 竞拍已结束 -->
+      <button 
+        class="bid-btn ended" 
+        wx:if="{{goods.status !== 0}}"
+        disabled
+      >
+        竞拍已结束
+      </button>
+    </view>
+  </view>
+</view>

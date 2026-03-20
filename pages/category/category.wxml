@@ -1,0 +1,61 @@
+<!--pages/category/category.wxml - 三级分类-->
+<view class="container">
+  <!-- 左侧一级分类 -->
+  <scroll-view class="first-level" scroll-y>
+    <view 
+      class="first-level-item {{item.id === currentFirstId ? 'active' : ''}}"
+      wx:for="{{firstLevel}}"
+      wx:key="id"
+      bindtap="onFirstLevelTap"
+      data-id="{{item.id}}"
+    >
+      <text class="first-level-icon">{{item.icon}}</text>
+      <text class="first-level-name">{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 右侧二三级分类 -->
+  <scroll-view class="right-content" scroll-y>
+    <!-- 二级分类 -->
+    <view class="second-level">
+      <view 
+        class="second-level-item {{item.id === currentSecondId ? 'active' : ''}}"
+        wx:for="{{currentSecondLevel}}"
+        wx:key="id"
+        bindtap="onSecondLevelTap"
+        data-id="{{item.id}}"
+      >
+        <text class="second-level-name">{{item.name}}</text>
+        <text class="arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 三级分类 -->
+    <view class="third-level">
+      <view class="third-level-title">热门推荐</view>
+      <view class="third-level-grid">
+        <view 
+          class="third-level-item {{thirdItem.id === currentThirdId ? 'active' : ''}}"
+          wx:for="{{currentSecondLevel}}"
+          wx:for-item="secondItem"
+          wx:for-index="secondIndex"
+          wx:key="id"
+          wx:if="{{secondItem.id === currentSecondId}}"
+        >
+          <view 
+            class="third-level-chip"
+            wx:for="{{secondItem.children}}"
+            wx:for-item="thirdItem"
+            wx:key="id"
+            bindtap="onThirdLevelTap"
+            data-second-id="{{secondItem.id}}"
+            data-third-id="{{thirdItem.id}}"
+            data-name="{{thirdItem.name}}"
+          >
+            <text>{{thirdItem.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

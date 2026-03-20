@@ -1,0 +1,55 @@
+/* app.wxss - 浅色主题 */
+page {
+  /* 主题色 */
+  --primary-color: #0D2B5B;
+  --highlight-color: #FFA500;
+  --text-color: #333333;
+  --bg-color: #F9FAFC;
+  --card-bg: #FFFFFF;
+  --tab-unselected: #AAAAAA;
+  
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.container {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+/* 通用按钮 */
+.btn-primary {
+  background: linear-gradient(135deg, #0D2B5B 0%, #1A4A8C 100%);
+  color: #FFFFFF;
+  border-radius: 24rpx;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(13, 43, 91, 0.3);
+}
+
+.btn-primary:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+/* 通用卡片 */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 24rpx;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 高亮标签 */
+.badge {
+  font-size: 22rpx;
+  color: #FFFFFF;
+  background-color: var(--highlight-color);
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+/* 金额高亮 */
+.price-highlight {
+  color: #FF6B6B;
+  font-weight: bold;
+}
