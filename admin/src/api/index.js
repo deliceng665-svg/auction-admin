@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 const request = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE || '/api',
+  baseURL: 'https://auction-admin.vercel.app/api',
   timeout: 30000
 })
 
