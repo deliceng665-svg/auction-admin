@@ -5,9 +5,25 @@
       <div class="welcome-content">
         <h2>欢迎回来，{{ userName }}</h2>
         <p>今天是 {{ today }}，继续加油！</p>
+        <div class="welcome-stats">
+          <div class="stat-pill">
+            <span class="stat-dot"></span>
+            实时数据
+          </div>
+        </div>
       </div>
       <div class="welcome-illustration">
-        <span>📊</span>
+        <div class="avatar-3d">
+          <div class="avatar-body"></div>
+          <div class="avatar-face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="mouth"></div>
+          </div>
+          <div class="avatar-bling b1"></div>
+          <div class="avatar-bling b2"></div>
+          <div class="avatar-bling b3"></div>
+        </div>
       </div>
     </div>
 
@@ -245,9 +261,153 @@ onMounted(async () => {
   opacity: 0.9;
 }
 
+.welcome-stats {
+  margin-top: 16px;
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.stat-dot {
+  width: 8px;
+  height: 8px;
+  background: #00FF88;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.welcome-illustration {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
 .welcome-illustration span {
   font-size: 64px;
   opacity: 0.8;
+}
+
+/* 3D IP 形象 */
+.welcome-illustration .avatar-3d {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.avatar-body {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #fff 0%, #e8f4ff 50%, #cce4ff 100%);
+  border-radius: 20px;
+  top: 10px;
+  left: 10px;
+  box-shadow:
+    0 10px 30px rgba(22, 93, 255, 0.3),
+    inset 0 -5px 15px rgba(22, 93, 255, 0.1),
+    inset 0 5px 15px rgba(255, 255, 255, 0.8);
+  transform: perspective(500px) rotateX(10deg);
+}
+
+.avatar-face {
+  position: absolute;
+  width: 60px;
+  height: 50px;
+  top: 20px;
+  left: 20px;
+}
+
+.eye {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #165DFF;
+  border-radius: 50%;
+  top: 10px;
+  animation: blink 4s ease-in-out infinite;
+}
+
+.eye::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px;
+  right: 3px;
+}
+
+.eye.left { left: 5px; }
+.eye.right { right: 5px; }
+
+.mouth {
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background: #FF6B6B;
+  border-radius: 0 0 20px 20px;
+  bottom: 5px;
+  left: 20px;
+}
+
+.avatar-bling {
+  position: absolute;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  border-radius: 50%;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.avatar-bling.b1 {
+  width: 8px;
+  height: 8px;
+  top: 5px;
+  right: 15px;
+  animation-delay: 0s;
+}
+
+.avatar-bling.b2 {
+  width: 5px;
+  height: 5px;
+  top: 25px;
+  right: 5px;
+  animation-delay: 0.5s;
+}
+
+.avatar-bling.b3 {
+  width: 6px;
+  height: 6px;
+  bottom: 10px;
+  left: 5px;
+  animation-delay: 1s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) perspective(500px) rotateX(10deg); }
+  50% { transform: translateY(-10px) perspective(500px) rotateX(15deg); }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.5); }
 }
 
 /* 今日数据卡片 */

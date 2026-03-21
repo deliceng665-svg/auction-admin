@@ -16,7 +16,10 @@
       "dest": "/server/index.js"
     },
     {
-      "src": "/((?!api).*)",
+      "handle": "/"
+    },
+    {
+      "src": "/(.*)",
       "dest": "/admin/dist/index.html"
     }
   ]
